@@ -74,36 +74,44 @@ function Gameboard() {
         }
     }
 
-    // TODO: Check if cells match in a straight column, or diagonally
-    // Check if cells match in a straight row
+    // Check if cells match in a row, column, or diagonally
     function checkSame() {
-        // Loop through board rows
-        for (let i = 0; i < rows; i++) {
-            // Resets the column match every time we enter a new row
-            let columnMatch = true;
-            let lastColumnMark = "";
-            // Loop through board columns
-            for (let j = 0; j < columns; j++) {
-                // If we are at the beginning of the columns, set last column mark to current element
-                if (j == 0) {
-                    lastColumnMark = board[i][j].getValue();
+        for (let i = 0; i < 3; i++) {
+            // Check if any cells match in a straight row
+            if (board[i][0].getValue() == board[i][1].getValue() && board[i][1].getValue() == board[i][2].getValue()) {
+                // Make sure that cells arent blank
+                if (board[i][0].getValue() != "" && board[i][1].getValue() != "" && board[i][2].getValue() != "") {
+                    return true;
                 }
-                // Checks if last column mark is not the same as current column
-                else if (lastColumnMark != board[i][j].getValue()) {
-                    columnMatch = false;
-                }
-                // Checks if we are at the end of the columns, all marks have matched, and lastColumnMark isn't blank
-                else if (j == columns - 1 && columnMatch == true && lastColumnMark != "") {
+            }
+            // Check if any cells match in a straight column
+            if (board[0][i].getValue() == board[1][i].getValue() && board[1][i].getValue() == board[2][i].getValue()) {
+                // Make sure that cells arent blank
+                if (board[0][i].getValue() != "" && board[1][i].getValue() != "" && board[2][i].getValue() != "") {
                     return true;
                 }
             }
         }
-        // If there is no match, return false
+        // Check if any cells match diagonally from the left
+        if (board[0][0].getValue() == board[1][1].getValue() && board[1][1].getValue() == board[2][2].getValue()) {
+            // Make sure that cells arent blank
+            if (board[0][0].getValue() != "" && board[1][1].getValue() != "" && board[2][2].getValue() != "") {
+                return true;
+            }
+        }
+        // Check if any cells match diagonally from the right
+        if (board[0][2].getValue() == board[1][1].getValue() && board[1][1].getValue() == board[2][0].getValue()) {
+            // Make sure that cells arent blank
+            if (board[0][2].getValue() != "" && board[1][1].getValue() != "" && board[2][0].getValue() != "") {
+                return true;
+            }
+        }
         return false;
     }
 
     // Adds a player mark at a specific row & columns, and check's if
     function addMark(row, column, mark) {
+        // TODO: Check if cell is not blank
         board[row][column].setValue(mark);
     }
 
