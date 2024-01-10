@@ -109,10 +109,14 @@ function Gameboard() {
         return false;
     }
 
-    // Adds a player mark at a specific row & columns, and check's if
+    // Adds a player mark at a specific row & columns, and check's if cell is not blank
     function addMark(row, column, mark) {
-        // TODO: Check if cell is not blank
-        board[row][column].setValue(mark);
+        // Check if cell is not blank
+        if (board[row][column].getValue() != "") {
+            console.log("Cell already filled");
+        } else {
+            board[row][column].setValue(mark);
+        }
     }
 
     // Prints out the board to the console
