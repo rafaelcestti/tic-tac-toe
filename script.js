@@ -14,7 +14,7 @@ function Cell() {
 
 function Gameboard() {
     // Array where we will store our gameboard
-    let board = [];
+    let emptyBoard = [];
 
     // Row & Column length for the board
     let rows = 3;
@@ -24,13 +24,16 @@ function Gameboard() {
     // Loop through rows
     for (let i = 0; i < rows; i++) {
         // Initialize an empty array at current row
-        board[i] = [];
+        emptyBoard[i] = [];
         // Loop through columns
         for (let j = 0; j < columns; j++) {
             // Push an empty cell to each column in the current row
-            board[i].push(Cell());
+            emptyBoard[i].push(Cell());
         }
     }
+
+    // Initialize a copy of the empty board that we can use on resetBoard()
+    let board = emptyBoard;
 
     // Check if cells match in a row, column, or diagonally
     function checkSame() {
@@ -77,7 +80,18 @@ function Gameboard() {
         }
     }
 
-    return { checkSame, addMark };
+    function resetBoard() {
+        // Loop through board and set cell values to """
+        for (let i = 0; i < rows; i++) {
+            // Loop through columns
+            for (let j = 0; j < columns; j++) {
+                // Set cell value to empty
+                emptyBoard[i][j].setValue("");
+            }
+        }
+    }
+
+    return { resetBoard, checkSame, addMark };
 }
 
 function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") {
@@ -141,7 +155,12 @@ function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") 
         return currentTurn.getName();
     }
 
-    return { getCurrentTurnName, getCurrentTurnMark, setMark };
+    // Reset the gameboard
+    function resetGameboard() {
+        board.resetBoard();
+    }
+
+    return { getCurrentTurnName, getCurrentTurnMark, setMark, resetGameboard };
 }
 
 function Gamedisplay() {
@@ -152,9 +171,9 @@ function Gamedisplay() {
     // Select our Start Game button
     const startGameButton = document.querySelector("#startGameButton");
     // Add event listener to open dialog when we press it
-    const dialog = document.querySelector("dialog");
+    const startGameDialog = document.querySelector("#startGameDialog");
     startGameButton.addEventListener("click", () => {
-        dialog.showModal();
+        startGameDialog.showModal();
     });
     // Add event listener to button inside the dialog
     const dialogButton = document.querySelector("#dialogButton");
@@ -169,7 +188,7 @@ function Gamedisplay() {
             currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
         }
         gameStart = true;
-        dialog.close();
+        startGameDialog.close();
     });
     // Select all our cell elements
     const cells = document.querySelectorAll(".cell");
@@ -195,6 +214,17 @@ function Gamedisplay() {
             }
         })
     );
+    // Select play again button
+    const playAgainButton = document.querySelector("#playAgainButton");
+    // If play again button is clicked, clear the gameBoard & currentTurn container, and reset the gameboard
+    playAgainButton.addEventListener("click", () => {
+        currentTurnContainer.textContent = "Press Start Game Button to begin!";
+        cells.forEach((cell) => {
+            cell.textContent = "";
+        });
+        game.resetGameboard();
+        gameOverDialog.close();
+    });
 }
 
 // Start our game
