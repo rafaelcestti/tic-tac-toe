@@ -36,4 +36,8 @@ body {
 .cell {
     background-color: white;
     border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
 }
