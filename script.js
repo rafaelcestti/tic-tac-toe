@@ -41,7 +41,7 @@ Game controller object
  */
 
 function Cell() {
-    let cellValue = "test";
+    let cellValue = "";
 
     function setValue(value) {
         cellValue = value;
@@ -51,7 +51,39 @@ function Cell() {
         return cellValue;
     }
 
-    return {setValue, getValue};
+    return { setValue, getValue };
 }
 
-let testCell = Cell();
+function Gameboard() {
+    // Array where we will store our gameboard
+    let board = [];
+
+    // Row & Column length for the board
+    let rows = 3;
+    let columns = 3;
+
+    // Nested for-loop to initialize our board 2D array
+    // Loop through rows
+    for (let i = 0; i < rows; i++) {
+        // Initialize an empty array at current row
+        board[i] = [];
+        // Loop through columns
+        for (let j = 0; j < columns; j++) {
+            // Push an empty cell to each column in the current row
+            board[i].push(Cell());
+        }
+    }
+
+    // Adds a player mark at a specific row & columns
+    function addMark(row, column, mark) {
+        board[row][column].setValue(mark);
+    }
+
+    // Prints out the board to the console
+    function printBoard() {
+        let tempBoard = board.map((row) => row.map((column) => column.getValue()));
+        return tempBoard;
+    }
+
+    return { addMark, printBoard };
+}
