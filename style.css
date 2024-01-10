@@ -1,19 +1,19 @@
 /* Import Roboto font */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 body {
     height: 100vh;
     display: grid;
-        font-family: "Roboto", sans-serif;
+    font-family: "Roboto", sans-serif;
     grid-template:
         "navbar" 100px
-        "gameboard" 1fr;
+        "playerTurn" 75px
+        "gameboard" 1fr
         / 1fr;
     background-color: lightpink;
 }
 
 /* Navbar Styling */
-
 #navbar {
     grid-area: navbar;
     background-color: lightsteelblue;
@@ -29,8 +29,17 @@ body {
     padding: 1rem;
 }
 
-/* Gameboard and Cell styling */
+/* Player Turn Container Styling */
+#currentTurnContainer {
+    grid-area: playerTurn;
+    background-color: lightgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
 
+/* Gameboard and Cell styling */
 #gameboard {
     grid-area: gameboard;
     display: grid;
@@ -39,7 +48,6 @@ body {
         "middleLeft middleCell middleRight" 1fr
         "bottomLeft bottomMiddle bottomRight" 1fr
         / 1fr 1fr 1fr;
-    ;
 }
 
 .cell {
@@ -52,7 +60,6 @@ body {
 }
 
 /* Dialog & Form Styling */
-
 form {
     display: flex;
     flex-direction: column;

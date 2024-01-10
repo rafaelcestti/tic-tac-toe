@@ -77,16 +77,10 @@ function Gameboard() {
         }
     }
 
-    // Prints out the board to the console
-    function printBoard() {
-        let tempBoard = board.map((row) => row.map((column) => column.getValue()));
-        console.log(tempBoard);
-    }
-
-    return { checkSame, addMark, printBoard };
+    return { checkSame, addMark };
 }
 
-function Gamecontroller() {
+function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") {
     // Player constructor
     function player(playerName, playerMark) {
         const mark = playerMark;
@@ -106,8 +100,8 @@ function Gamecontroller() {
     const players = [];
 
     // Initialize both players
-    const player1 = player("Player 1", "X");
-    const player2 = player("Player 2", "O");
+    const player1 = player(playerOneName, "X");
+    const player2 = player(playerTwoName, "O");
 
     // Insert both players to our players array
     players.push(player1, player2);
@@ -127,21 +121,13 @@ function Gamecontroller() {
         }
     }
 
-    // Starts a new round
-    function newRound() {
-        board.printBoard();
-        console.log(`It's ${currentTurn.getName()}'s turn.`);
-    }
-
-    // Adds a mark at a specific row & column, checks if game is won, switches player turn, and plays a new round
+    // Adds a mark at a specific row & column, checks if game is won, and switches player turn
     function setMark(row, column) {
         board.addMark(row, column, getCurrentTurnMark());
         if (board.checkSame()) {
-            board.printBoard();
-            console.log(`${currentTurn.getName()} has won.`);
+            return true;
         } else {
             switchTurn();
-            newRound();
         }
     }
 
@@ -150,13 +136,19 @@ function Gamecontroller() {
         return currentTurn.getMark();
     }
 
-    // Calls new round at startup
-    newRound();
+    // Gets the name for the current player
+    function getCurrentTurnName() {
+        return currentTurn.getName();
+    }
 
-    return { getCurrentTurnMark, newRound, setMark };
+    return { getCurrentTurnName, getCurrentTurnMark, setMark };
 }
 
-function Gamedisplay(gameboard) {
+function Gamedisplay() {
+    // Variable to make sure we only start the game one time
+    let gameStart = false;
+    // Initialize variable that will store our gamecontroller
+    let game;
     // Select our Start Game button
     const startGameButton = document.querySelector("#startGameButton");
     // Add event listener to open dialog when we press it
@@ -166,24 +158,40 @@ function Gamedisplay(gameboard) {
     });
     // Add event listener to button inside the dialog
     const dialogButton = document.querySelector("#dialogButton");
+    // Select player name input elements
+    const player1 = document.querySelector("#player1");
+    const player2 = document.querySelector("#player2");
     dialogButton.addEventListener("click", () => {
+        if (gameStart == false) {
+            // Initialize our gamecontroller with user's player names
+            game = Gamecontroller(player1.value, player2.value);
+            // Initialize the current turn player name
+            currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
+        }
+        gameStart = true;
         dialog.close();
     });
     // Select all our cell elements
     const cells = document.querySelectorAll(".cell");
+    // Select currentTurnContainer element
+    const currentTurnContainer = document.querySelector("#currentTurnContainer");
     cells.forEach((cell) =>
         cell.addEventListener("click", () => {
             // Add player mark
-            cell.textContent = gameboard.getCurrentTurnMark();
-            gameboard.setMark(cell.dataset.row, cell.dataset.column);
+            cell.textContent = game.getCurrentTurnMark();
+            let currentRound = game.setMark(cell.dataset.row, cell.dataset.column);
+            // Check if someone won
+            if (currentRound == true) {
+                currentTurnContainer.textContent = `${game.getCurrentTurnName()} Wins!`;
+                return;
+            }
+            // Change the currentTurnContainer text
+            else {
+                currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
+            }
         })
     );
 }
 
-function Pregame() {}
-
 // Start our game
-game = Gamecontroller();
-
-// Start our game display
-Gamedisplay(game);
+Gamedisplay();
