@@ -135,7 +135,7 @@ function Gamecontroller() {
 
     // Adds a mark at a specific row & column, checks if game is won, switches player turn, and plays a new round
     function setMark(row, column) {
-        board.addMark(row, column, currentTurn.getMark());
+        board.addMark(row, column, getCurrentTurnMark());
         if (board.checkSame()) {
             board.printBoard();
             console.log(`${currentTurn.getName()} has won.`);
@@ -145,10 +145,31 @@ function Gamecontroller() {
         }
     }
 
+    // Gets the mark for the current player
+    function getCurrentTurnMark() {
+        return currentTurn.getMark();
+    }
+
     // Calls new round at startup
     newRound();
 
-    return { newRound, setMark };
+    return { getCurrentTurnMark, newRound, setMark };
 }
 
+function Gamedisplay(gameboard) {
+    // Select all our cell elements
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach((cell) =>
+        cell.addEventListener("click", () => {
+            // Add player mark
+            cell.textContent = gameboard.getCurrentTurnMark();
+            gameboard.setMark(cell.dataset.row, cell.dataset.column);
+        })
+    );
+}
+
+// Start our game
 game = Gamecontroller();
+
+// Start our game display
+Gamedisplay(game);
