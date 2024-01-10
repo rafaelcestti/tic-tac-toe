@@ -175,6 +175,9 @@ function Gamedisplay() {
     const cells = document.querySelectorAll(".cell");
     // Select currentTurnContainer element
     const currentTurnContainer = document.querySelector("#currentTurnContainer");
+    // Select gameOverContainer & gameOverText element
+    const gameOverDialog = document.querySelector("#gameOverDialog");
+    const gameOverText = document.querySelector("#gameOverText");
     cells.forEach((cell) =>
         cell.addEventListener("click", () => {
             // Add player mark
@@ -182,7 +185,8 @@ function Gamedisplay() {
             let currentRound = game.setMark(cell.dataset.row, cell.dataset.column);
             // Check if someone won
             if (currentRound == true) {
-                currentTurnContainer.textContent = `${game.getCurrentTurnName()} Wins!`;
+                gameOverDialog.showModal();
+                gameOverText.textContent = `${game.getCurrentTurnName()} Wins!`;
                 return;
             }
             // Change the currentTurnContainer text
