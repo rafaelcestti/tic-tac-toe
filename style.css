@@ -12,15 +12,24 @@ body {
     background-color: lightpink;
 }
 
+/* Navbar Styling */
+
 #navbar {
     grid-area: navbar;
     background-color: lightsteelblue;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     font-size: 2rem;
     font-weight: 600;
     padding: 1rem;
 }
+
+#navbar button {
+    padding: 1rem;
+}
+
+/* Gameboard and Cell styling */
 
 #gameboard {
     grid-area: gameboard;
@@ -40,4 +49,12 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 5rem;
+}
+
+/* Dialog & Form Styling */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }

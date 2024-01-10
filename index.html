@@ -9,8 +9,22 @@
         <title>Tic-Tac-Toe</title>
     </head>
     <body>
+        <dialog>
+            <form action="">
+                <label for="player1">
+                    Player 1 Name:
+                    <input type="text" name="player1" id="player1" />
+                </label>
+                <label for="player2">
+                    Player 2 Name:
+                    <input type="text" name="player2" id="player2" />
+                </label>
+                <button id="dialogButton" type="button">Begin!</button>
+            </form>
+        </dialog>
         <div id="navbar">
             <h1>Tic-Tac-Toe</h1>
+            <button id="startGameButton">Start Game</button>
         </div>
         <div id="gameboard">
             <div class="cell" data-row="0" data-column="0"></div>

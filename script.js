@@ -157,6 +157,18 @@ function Gamecontroller() {
 }
 
 function Gamedisplay(gameboard) {
+    // Select our Start Game button
+    const startGameButton = document.querySelector("#startGameButton");
+    // Add event listener to open dialog when we press it
+    const dialog = document.querySelector("dialog");
+    startGameButton.addEventListener("click", () => {
+        dialog.showModal();
+    });
+    // Add event listener to button inside the dialog
+    const dialogButton = document.querySelector("#dialogButton");
+    dialogButton.addEventListener("click", () => {
+        dialog.close();
+    });
     // Select all our cell elements
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell) =>
@@ -167,6 +179,8 @@ function Gamedisplay(gameboard) {
         })
     );
 }
+
+function Pregame() {}
 
 // Start our game
 game = Gamecontroller();
