@@ -74,7 +74,7 @@ function Gameboard() {
     function addMark(row, column, mark) {
         // Check if cell is not blank
         if (board[row][column].getValue() != "") {
-            console.log("Cell already filled");
+            return false;
         } else {
             board[row][column].setValue(mark);
         }
@@ -135,13 +135,12 @@ function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") 
         }
     }
 
-    // Adds a mark at a specific row & column, checks if game is won, and switches player turn
+    // Adds a mark at a specific row & column & check if game is won
     function setMark(row, column) {
-        board.addMark(row, column, getCurrentTurnMark());
-        if (board.checkSame()) {
-            return true;
-        } else {
-            switchTurn();
+        if (board.addMark(row, column, getCurrentTurnMark()) == false) {
+            return "Cell Filled";
+        } else if (board.checkSame()) {
+            return "Game Over";
         }
     }
 
@@ -160,7 +159,7 @@ function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") 
         board.resetBoard();
     }
 
-    return { getCurrentTurnName, getCurrentTurnMark, setMark, resetGameboard };
+    return { getCurrentTurnName, getCurrentTurnMark, setMark, resetGameboard, switchTurn };
 }
 
 function Gamedisplay() {
@@ -199,17 +198,23 @@ function Gamedisplay() {
     const gameOverText = document.querySelector("#gameOverText");
     cells.forEach((cell) =>
         cell.addEventListener("click", () => {
-            // Add player mark
-            cell.textContent = game.getCurrentTurnMark();
             let currentRound = game.setMark(cell.dataset.row, cell.dataset.column);
+            // Check if cell is filled
+            if (currentRound == "Cell Filled") {
+                currentTurnContainer.textContent = "Cell is already filled";
+            }
             // Check if someone won
-            if (currentRound == true) {
+            else if (currentRound == "Game Over") {
+                cell.textContent = game.getCurrentTurnMark();
                 gameOverDialog.showModal();
                 gameOverText.textContent = `${game.getCurrentTurnName()} Wins!`;
-                return;
+                // Switch turn to get ready for next game
+                game.switchTurn();
             }
-            // Change the currentTurnContainer text
+            // Add player mark & change the currentTurnContainer text
             else {
+                cell.textContent = game.getCurrentTurnMark();
+                game.switchTurn();
                 currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
             }
         })
@@ -218,7 +223,7 @@ function Gamedisplay() {
     const playAgainButton = document.querySelector("#playAgainButton");
     // If play again button is clicked, clear the gameBoard & currentTurn container, and reset the gameboard
     playAgainButton.addEventListener("click", () => {
-        currentTurnContainer.textContent = "Press Start Game Button to begin!";
+        currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
         cells.forEach((cell) => {
             cell.textContent = "";
         });
