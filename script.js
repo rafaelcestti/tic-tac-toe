@@ -162,7 +162,7 @@ function Gamecontroller(playerOneName = "Player 1", playerTwoName = "Player 2") 
     return { getCurrentTurnName, getCurrentTurnMark, setMark, resetGameboard, switchTurn };
 }
 
-function Gamedisplay() {
+(function Gamedisplay() {
     // Variable to make sure we only start the game one time
     let gameStart = false;
     // Initialize variable that will store our gamecontroller
@@ -233,7 +233,4 @@ function Gamedisplay() {
         game.resetGameboard();
         gameOverDialog.close();
     });
-}
-
-// Start our game
-Gamedisplay();
+})();
