@@ -198,24 +198,27 @@ function Gamedisplay() {
     const gameOverText = document.querySelector("#gameOverText");
     cells.forEach((cell) =>
         cell.addEventListener("click", () => {
-            let currentRound = game.setMark(cell.dataset.row, cell.dataset.column);
-            // Check if cell is filled
-            if (currentRound == "Cell Filled") {
-                currentTurnContainer.textContent = "Cell is already filled";
-            }
-            // Check if someone won
-            else if (currentRound == "Game Over") {
-                cell.textContent = game.getCurrentTurnMark();
-                gameOverDialog.showModal();
-                gameOverText.textContent = `${game.getCurrentTurnName()} Wins!`;
-                // Switch turn to get ready for next game
-                game.switchTurn();
-            }
-            // Add player mark & change the currentTurnContainer text
-            else {
-                cell.textContent = game.getCurrentTurnMark();
-                game.switchTurn();
-                currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
+            // Make sure game has started
+            if (game) {
+                let currentRound = game.setMark(cell.dataset.row, cell.dataset.column);
+                // Check if cell is filled
+                if (currentRound == "Cell Filled") {
+                    currentTurnContainer.textContent = "Cell is already filled";
+                }
+                // Check if someone won
+                else if (currentRound == "Game Over") {
+                    cell.textContent = game.getCurrentTurnMark();
+                    gameOverDialog.showModal();
+                    gameOverText.textContent = `${game.getCurrentTurnName()} Wins!`;
+                    // Switch turn to get ready for next game
+                    game.switchTurn();
+                }
+                // Add player mark & change the currentTurnContainer text
+                else {
+                    cell.textContent = game.getCurrentTurnMark();
+                    game.switchTurn();
+                    currentTurnContainer.textContent = `${game.getCurrentTurnName()}'s Turn`;
+                }
             }
         })
     );
