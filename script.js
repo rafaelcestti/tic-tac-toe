@@ -37,36 +37,33 @@ function Gameboard() {
 
     // Check if cells match in a row, column, or diagonally
     function checkSame() {
+        // Helper function that checks if three cells are equal & not empty
+        function isLineEqual(cell1, cell2, cell3) {
+            return (
+                cell1.getValue() === cell2.getValue() &&
+                cell2.getValue() === cell3.getValue() &&
+                cell1.getValue() !== ""
+            );
+        }
+
+        // Check rows & columns
         for (let i = 0; i < 3; i++) {
-            // Check if any cells match in a straight row
-            if (board[i][0].getValue() == board[i][1].getValue() && board[i][1].getValue() == board[i][2].getValue()) {
-                // Make sure that cells arent blank
-                if (board[i][0].getValue() != "" && board[i][1].getValue() != "" && board[i][2].getValue() != "") {
-                    return true;
-                }
-            }
-            // Check if any cells match in a straight column
-            if (board[0][i].getValue() == board[1][i].getValue() && board[1][i].getValue() == board[2][i].getValue()) {
-                // Make sure that cells arent blank
-                if (board[0][i].getValue() != "" && board[1][i].getValue() != "" && board[2][i].getValue() != "") {
-                    return true;
-                }
-            }
-        }
-        // Check if any cells match diagonally from the left
-        if (board[0][0].getValue() == board[1][1].getValue() && board[1][1].getValue() == board[2][2].getValue()) {
-            // Make sure that cells arent blank
-            if (board[0][0].getValue() != "" && board[1][1].getValue() != "" && board[2][2].getValue() != "") {
+            if (
+                isLineEqual(board[i][0], board[i][1], board[i][2]) || // Row check
+                isLineEqual(board[0][i], board[1][i], board[2][i]) // Column check
+            ) {
                 return true;
             }
         }
-        // Check if any cells match diagonally from the right
-        if (board[0][2].getValue() == board[1][1].getValue() && board[1][1].getValue() == board[2][0].getValue()) {
-            // Make sure that cells arent blank
-            if (board[0][2].getValue() != "" && board[1][1].getValue() != "" && board[2][0].getValue() != "") {
-                return true;
-            }
+
+        // Check diagonals
+        if (
+            isLineEqual(board[0][0], board[1][1], board[2][2]) || // Diagonal from left
+            isLineEqual(board[0][2], board[1][1], board[2][0]) // Diagonal from right
+        ) {
+            return true;
         }
+
         return false;
     }
 
