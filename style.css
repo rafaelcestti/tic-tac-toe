@@ -10,7 +10,6 @@ body {
         "playerTurn" 75px
         "gameboard" 1fr
         / 1fr;
-    background-color: lightpink;
 }
 
 /* Navbar Styling */
@@ -40,14 +39,19 @@ body {
 }
 
 /* Gameboard and Cell styling */
+#gameboardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #gameboard {
     grid-area: gameboard;
     display: grid;
-    grid-template:
-        "topLeft topMiddle topRight" 1fr
-        "middleLeft middleCell middleRight" 1fr
-        "bottomLeft bottomMiddle bottomRight" 1fr
-        / 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 250px);
+    grid-template-rows: repeat(3, 250px);
+    outline: 1px black solid;
+    box-shadow: 0px 0px 10px rgb(199, 199, 199);
 }
 
 .cell {
